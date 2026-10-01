@@ -1,0 +1,88 @@
+name: cloud-sign
+
+# iSign 云签 — GitHub 云签名打包工作流
+# 在云端完成 IPA 重签名，无需本地安装任何签名工具。
+# 用法：仓库 Actions → cloud-sign → Run workflow，填写输入项后触发。
+
+on:
+  workflow_dispatch:
+    inputs:
+      ipa_url:
+        description: '待签名 IPA 的下载地址（https://...）或仓库内路径（如 dist/app.ipa）'
+        required: true
+        default: 'https://example.com/unsigned-app.ipa'
+      display_name:
+        description: '应用显示名称'
+        required: false
+        default: 'iSign 示例应用'
+      bundle_id:
+        description: 'Bundle ID（需与描述文件匹配）'
+        required: false
+        default: 'com.example.app'
+      version:
+        description: '版本号'
+        required: false
+        default: '1.0.0'
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    name: 云端签名打包
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 读取证书与描述文件（来自 GitHub Secrets）
+        run: |
+          echo "${{ secrets.P12_BASE64 }}" | base64 -d > cert.p12
+          echo "${{ secrets.MOBILEPROV_BASE64 }}" | base64 -d > app.mobileprovision
+          ls -la cert.p12 app.mobileprovision
+
+      - name: 下载待签名 IPA
+        run: |
+          if [[ "${{ inputs.ipa_url }}" == http* ]]; then
+            curl -L -o input.ipa "${{ inputs.ipa_url }}"
+          else
+            cp "${{ inputs.ipa_url }}" input.ipa
+          fi
+          ls -la input.ipa
+
+      - name: 安装依赖与编译 zsign（跨平台 iOS 签名工具）
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git g++ pkg-config libssl-dev libminizip-dev
+          git clone https://github.com/zhlynn/zsign.git
+          cd zsign/build/linux
+          make clean && make
+          ls -la zsign
+          sudo ln -sf "$(pwd)/zsign" /usr/local/bin/zsign
+
+      - name: 云端重签名
+        run: |
+          zsign \
+            -k cert.p12 \
+            -p "${{ secrets.P12_PASSWORD }}" \
+            -m app.mobileprovision \
+            -b "${{ inputs.bundle_id }}" \
+            -n "${{ inputs.display_name }}" \
+            -o signed.ipa \
+            input.ipa
+          ls -la signed.ipa
+
+      - name: 上传签名产物
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-app-${{ github.run_id }}
+          path: signed.ipa
+
+      - name: 上传打包日志
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log-${{ github.run_id }}
+          path: |
+            signed.ipa
+            cert.p12
+            app.mobileprovision
+          if-no-files-found: ignore
