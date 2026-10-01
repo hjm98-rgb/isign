@@ -1,1 +1,201 @@
-完整官网页面（25KB HTML），内容与本地 isign-site/index.html 一致：iSign 云签官网落地页，包含导航、Hero、终端演示、功能网格、使用流程、GitHub云打包、下载CTA、FAQ、页脚。
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iSign 云签 — iOS 应用签名与分发工具</title>
+<meta name="description" content="iSign 云签：导入证书、云端签名、一键安装 iOS 应用。支持证书管理、应用管理列表、OTA 安装与 GitHub 云打包。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1220'/%3E%3Cpath d='M18 32l10 10 18-20' stroke='%2337D6F5' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#0B1220; --bg2:#0E1730; --bg3:#121D3D;
+  --ink:#EAF2FF; --ink-dim:#9FB3D9; --ink-faint:#6B7FA6;
+  --line:rgba(120,160,220,.16);
+  --cyan:#37D6F5; --blue:#2E7BFF; --grad:linear-gradient(120deg,#37D6F5 0%,#2E7BFF 100%);
+  --green:#3FE0A0; --amber:#FFC44D;
+  --radius:18px; --radius-s:12px;
+  --shadow:0 20px 60px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Noto Sans SC",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;overflow-x:hidden}
+::selection{background:rgba(55,214,245,.3)}
+a{color:inherit;text-decoration:none}
+.bg-deco{position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(60% 40% at 80% -10%,rgba(46,123,255,.18),transparent 60%),radial-gradient(50% 40% at 10% 20%,rgba(55,214,245,.10),transparent 60%),var(--bg)}
+.bg-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:46px 46px;opacity:.5;mask-image:radial-gradient(60% 60% at 50% 20%,#000 0%,transparent 80%)}
+nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);background:rgba(11,18,32,.72);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1120px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:19px}
+.logo-badge{width:34px;height:34px;border-radius:9px;background:var(--grad);display:grid;place-items:center;box-shadow:0 6px 18px rgba(46,123,255,.4)}
+.logo-badge svg{width:18px;height:18px}
+.logo small{font-weight:400;font-size:12px;color:var(--ink-dim);margin-left:2px}
+.nav-links{display:flex;gap:26px;font-size:14px;color:var(--ink-dim)}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;border:1px solid transparent}
+.btn-primary{background:var(--grad);color:#04101F;box-shadow:0 8px 24px rgba(46,123,255,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(46,123,255,.5)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{border-color:rgba(55,214,245,.5);color:#fff}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:6px}
+.burger span{display:block;width:22px;height:2px;background:var(--ink);margin:5px 0;border-radius:2px}
+.hero{max-width:1120px;margin:0 auto;padding:88px 24px 60px;text-align:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--cyan);border:1px solid rgba(55,214,245,.3);padding:6px 14px;border-radius:999px;margin-bottom:26px;background:rgba(55,214,245,.06)}
+.hero-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-size:clamp(38px,6vw,66px);font-weight:900;line-height:1.15;letter-spacing:-1px}
+.hero h1 .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .sub{font-size:clamp(16px,2vw,20px);color:var(--ink-dim);max-width:640px;margin:22px auto 0;font-weight:300}
+.hero-cta{display:flex;gap:14px;justify-content:center;margin-top:34px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:0;justify-content:center;margin:56px auto 0;max-width:820px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:rgba(255,255,255,.02);flex-wrap:wrap}
+.stat{flex:1;min-width:150px;padding:22px 16px;text-align:center;border-right:1px solid var(--line)}
+.stat:last-child{border-right:none}
+.stat b{display:block;font-size:30px;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat span{font-size:12px;color:var(--ink-faint)}
+.terminal-wrap{max-width:720px;margin:46px auto 0;text-align:left;border:1px solid var(--line);border-radius:var(--radius);background:rgba(10,16,32,.85);box-shadow:var(--shadow);overflow:hidden}
+.term-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.term-bar i{width:11px;height:11px;border-radius:50%;display:block}
+.term-bar .r{background:#FF5F57}.term-bar .y{background:#FEBC2E}.term-bar .g{background:#28C840}
+.term-bar .t{flex:1;text-align:center;font-size:12px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace}
+.term-body{padding:20px;font-family:"JetBrains Mono",monospace;font-size:13px;line-height:1.9;color:#C8DAF5}
+.term-body .c{color:var(--cyan)}.term-body .s{color:var(--ink-faint)}.term-body .o{color:var(--green)}.term-body .a{color:var(--amber)}
+.term-body .cursor{display:inline-block;width:8px;height:16px;background:var(--cyan);vertical-align:middle;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+section{max-width:1120px;margin:0 auto;padding:80px 24px}
+.sec-head{text-align:center;max-width:680px;margin:0 auto 52px}
+.sec-head .kicker{color:var(--cyan);font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.sec-head h2{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.5px}
+.sec-head p{color:var(--ink-dim);margin-top:16px;font-weight:300}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feature{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:.25s;position:relative;overflow:hidden}
+.feature:hover{transform:translateY(-4px);border-color:rgba(55,214,245,.4);background:rgba(255,255,255,.04)}
+.feature .ico{width:46px;height:46px;border-radius:12px;background:rgba(55,214,245,.1);display:grid;place-items:center;margin-bottom:18px;border:1px solid rgba(55,214,245,.2)}
+.feature .ico svg{width:22px;height:22px;stroke:var(--cyan)}
+.feature h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.feature p{font-size:13.5px;color:var(--ink-dim);font-weight:300}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.step{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:var(--radius);padding:24px;position:relative}
+.step .num{font-size:40px;font-weight:900;color:transparent;-webkit-text-stroke:1.5px var(--blue);margin-bottom:12px;line-height:1}
+.step h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.step p{font-size:13px;color:var(--ink-dim);font-weight:300}
+.step .tag{display:inline-block;margin-top:12px;font-size:11px;color:var(--cyan);border:1px solid rgba(55,214,245,.3);padding:3px 10px;border-radius:999px}
+.cloud{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;border:1px solid var(--line);border-radius:22px;padding:44px;background:radial-gradient(80% 80% at 90% 0%,rgba(46,123,255,.14),transparent 60%),rgba(255,255,255,.02)}
+.cloud h2{font-size:clamp(24px,3vw,34px);font-weight:900;line-height:1.3}
+.cloud .lead{color:var(--ink-dim);margin-top:16px;font-weight:300}
+.cloud-list{margin-top:22px;display:flex;flex-direction:column;gap:14px}
+.cloud-item{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--ink-dim)}
+.cloud-item svg{width:20px;height:20px;stroke:var(--green);flex-shrink:0;margin-top:2px}
+.cloud-flow{margin-top:26px}
+.flow-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:var(--radius-s);margin-bottom:8px;font-family:"JetBrains Mono",monospace;font-size:12.5px;background:rgba(0,0,0,.25)}
+.flow-row .no{width:22px;height:22px;border-radius:50%;background:var(--grad);color:#04101F;font-weight:700;display:grid;place-items:center;font-size:12px;flex-shrink:0}
+.flow-row .c{color:var(--cyan)}.flow-row .o{color:var(--green)}.flow-row .arrow{margin-left:auto;color:var(--ink-faint)}
+.download{text-align:center;border:1px solid var(--line);border-radius:22px;padding:60px 24px;background:radial-gradient(70% 90% at 50% 0%,rgba(55,214,245,.12),transparent 70%),rgba(255,255,255,.02)}
+.download h2{font-size:clamp(26px,4vw,38px);font-weight:900}
+.download p{color:var(--ink-dim);margin:16px auto 0;max-width:520px;font-weight:300}
+.download .dl-cta{margin-top:32px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.dl-card{display:flex;align-items:center;gap:14px;padding:14px 26px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.03);transition:.2s;text-align:left}
+.dl-card:hover{border-color:rgba(55,214,245,.5);transform:translateY(-3px)}
+.dl-card .a{width:40px;height:40px;border-radius:10px;background:rgba(55,214,245,.12);display:grid;place-items:center}
+.dl-card .a svg{width:20px;height:20px;stroke:var(--cyan)}
+.dl-card b{display:block;font-size:14px}
+.dl-card span{font-size:11.5px;color:var(--ink-faint)}
+.dl-note{margin-top:20px;font-size:12px;color:var(--ink-faint)}
+.faq{max-width:760px;margin:0 auto}
+.faq-item{border:1px solid var(--line);border-radius:var(--radius-s);margin-bottom:12px;overflow:hidden;background:rgba(255,255,255,.02)}
+.faq-q{width:100%;background:none;border:none;color:var(--ink);font-size:15px;font-weight:600;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;font-family:inherit}
+.faq-q svg{width:18px;height:18px;stroke:var(--cyan);transition:.25s;flex-shrink:0}
+.faq-item.open .faq-q svg{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-a-in{padding:0 20px 18px;color:var(--ink-dim);font-size:13.5px;font-weight:300}
+footer{border-top:1px solid var(--line);margin-top:40px;background:rgba(8,12,24,.6)}
+.foot-in{max-width:1120px;margin:0 auto;padding:40px 24px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.foot-brand{max-width:300px}
+.foot-brand .logo{margin-bottom:12px}
+.foot-brand p{font-size:12.5px;color:var(--ink-faint);font-weight:300}
+.foot-col{display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--ink-dim)}
+.foot-col b{color:var(--ink);font-size:14px;margin-bottom:4px}
+.foot-col a:hover{color:var(--cyan)}
+.foot-bottom{border-top:1px solid var(--line);padding:16px 24px;text-align:center;font-size:12px;color:var(--ink-faint)}
+@media(max-width:920px){.features{grid-template-columns:repeat(2,1fr)}.steps{grid-template-columns:repeat(2,1fr)}.cloud{grid-template-columns:1fr;padding:32px}}
+@media(max-width:640px){.nav-links{display:none}.nav-cta .btn-ghost{display:none}.burger{display:block}.features{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.hero{padding:64px 20px 48px}.stat b{font-size:24px}section{padding:60px 20px}.hero-stats{flex-direction:column}.stat{border-right:none;border-bottom:1px solid var(--line)}.stat:last-child{border-bottom:none}}
+.mobile-menu{display:none}
+.mobile-menu.open{display:flex;flex-direction:column;gap:4px;padding:12px 24px 16px;border-top:1px solid var(--line);background:var(--bg2)}
+.mobile-menu a{padding:12px 6px;font-size:15px;color:var(--ink-dim);border-radius:8px}
+.mobile-menu a:hover{color:#fff;background:rgba(255,255,255,.04)}
+</style>
+</head>
+<body>
+<div class="bg-deco"></div><div class="bg-grid"></div>
+<nav><div class="nav-in">
+<a class="logo" href="#top"><span class="logo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#04101F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg></span>iSign<small>云签</small></a>
+<div class="nav-links"><a href="#features">功能</a><a href="#how">使用流程</a><a href="#cloud">云打包</a><a href="#download">下载</a><a href="#faq">常见问题</a></div>
+<div class="nav-cta"><a class="btn btn-ghost" href="#how">了解</a><a class="btn btn-primary" href="#download">开始使用</a><button class="burger" aria-label="菜单"><span></span><span></span><span></span></button></div>
+</div>
+<div class="mobile-menu" id="mobileMenu"><a href="#features">功能</a><a href="#how">使用流程</a><a href="#cloud">云打包</a><a href="#download">下载</a><a href="#faq">常见问题</a></div>
+</nav>
+<header class="hero" id="top">
+<div class="hero-eyebrow"><span class="dot"></span> 面向个人开发者的 iOS 应用签名与分发工具</div>
+<h1>导入证书<br>一键签名 · <span class="grad-text">点击即装</span></h1>
+<p class="sub">iSign 云签帮你把证书、应用与分发流程集中到一处——导入你的开发者证书，管理已签名应用列表，云端打包并生成可直接安装的链接，手机 Safari 打开即装。</p>
+<div class="hero-cta"><a class="btn btn-primary" href="#download">免费开始</a><a class="btn btn-ghost" href="#cloud">了解云打包</a></div>
+<div class="terminal-wrap"><div class="term-bar"><i class="r"></i><i class="y"></i><i class="g"></i><span class="t">iSign Cloud · 签名控制台</span></div><div class="term-body">
+<div><span class="c">$</span> isign cert import <span class="s">--p12 developer.p12 --profile app.mobileprovision</span></div>
+<div><span class="o">✔</span> 证书已导入：<span class="a">Apple Developer · 有效至 2027-06-30</span></div>
+<div>&nbsp;</div>
+<div><span class="c">$</span> isign app sign <span class="s">wechat.ipa --output signed/</span></div>
+<div><span class="o">✔</span> 签名完成 → <span class="c">signed/wechat.ipa</span></div>
+<div>&nbsp;</div>
+<div><span class="c">$</span> isign install <span class="s">--device iphone</span></div>
+<div><span class="o">→</span> 正在生成安装链接：<span class="c">https://isign.app/install/8f3k2a</span></div>
+<div><span class="o">→</span> 请在 iPhone Safari 中打开<span class="cursor">&nbsp;</span></div>
+</div></div>
+<div class="hero-stats"><div class="stat"><b>99.9%</b><span>签名成功率</span></div><div class="stat"><b>30s</b><span>从证书到安装</span></div><div class="stat"><b>云打包</b><span>GitHub Actions 驱动</span></div><div class="stat"><b>0 门槛</b><span>无需 Mac 环境</span></div></div>
+</header>
+<section id="features"><div class="sec-head"><div class="kicker">Features</div><h2>把签名这件事，做到极简</h2><p>iSign 将证书管理、应用签名、分发安装整合为一个网页应用，摆脱对 Mac + Xcode 的依赖。</p></div>
+<div class="features">
+<div class="feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 3v4M16 3v4M3 10h18M7 15h4"/></svg></div><h3>证书导入与管理</h3><p>一键上传 .p12 证书与 .mobileprovision 描述文件，自动解析有效期、团队与 Bundle ID，多证书集中管理。</p></div>
+<div class="feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></svg></div><h3>应用管理列表</h3><p>已签名应用一目了然：图标、版本、Bundle ID、安装状态。刷新、删除、重新签名一键完成。</p></div>
+<div class="feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><h3>云端签名打包</h3><p>借助 GitHub Actions 在云端完成 IPA 重签名，无需本地安装任何签名工具，随时随地打包。</p></div>
+<div class="feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4L13 21l-3-8-8-3 20-6z"/></svg></div><h3>点击即装</h3><p>生成 OTA 安装链接，iPhone Safari 打开即可安装到桌面，无需数据线、无需电脑。</p></div>
+<div class="feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><h3>设置导入扩展</h3><p>在设置中导入书籍、文件与其他资源，作为应用分发之外的资源管理入口，随时调用。</p></div>
+<div class="feature"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9L20 8l-4 3.9.9 5.6L12 15l-4.9 2.5L8 11.9 4 8l5.6-1.1L12 2z"/></svg></div><h3>证书与安全提示</h3><p>内置证书有效期提醒、描述文件匹配校验与安全使用指引，帮助你合规使用自有证书。</p></div>
+</div></section>
+<section id="how" style="padding-top:0"><div class="sec-head"><div class="kicker">How it works</div><h2>三步，完成签名安装</h2><p>从导入证书到手机安装，整个过程只需要几步。</p></div>
+<div class="steps">
+<div class="step"><div class="num">01</div><h3>导入证书</h3><p>上传你的开发者 .p12 证书与描述文件，系统自动校验并保存。</p><span class="tag">证书</span></div>
+<div class="step"><div class="num">02</div><h3>签名应用</h3><p>选择要签名的 IPA，发起云端打包，等待签名完成。</p><span class="tag">云打包</span></div>
+<div class="step"><div class="num">03</div><h3>点击安装</h3><p>在应用列表点击安装，用 iPhone 打开链接即可装到桌面。</p><span class="tag">安装</span></div>
+<div class="step"><div class="num">04</div><h3>持续管理</h3><p>在设置中导入更多资源，随时刷新、重签、移除应用。</p><span class="tag">设置</span></div>
+</div></section>
+<section id="cloud"><div class="cloud">
+<div><div class="kicker" style="color:var(--cyan);font-size:13px;font-weight:600;letter-spacing:2px;margin-bottom:14px">GitHub Cloud Build</div><h2>用 GitHub 云打包<br>真正免本地环境</h2><p class="lead">iSign 内置基于 GitHub Actions 的云签名工作流：把 IPA 与证书推送到仓库后，工作流在云端自动完成重签名并产出可安装产物。你只需要点击「开始打包」。</p><div class="cloud-list"><div class="cloud-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg>真实 GitHub 仓库托管，源码可审计</div><div class="cloud-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg>云端重签名，Mac 与 Xcode 全部不需要</div><div class="cloud-item"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg>产出物可直接用于 OTA 分发安装</div></div></div>
+<div class="cloud-flow"><div class="flow-row"><span class="no">1</span><span>推送 <span class="c">app.ipa</span> + <span class="c">证书</span> 到仓库</span><span class="arrow">→</span></div><div class="flow-row"><span class="no">2</span><span>触发 <span class="o">Actions · cloud-sign</span> 工作流</span><span class="arrow">→</span></div><div class="flow-row"><span class="no">3</span><span>云端 <span class="c">zsign</span> 重签名 IPA</span><span class="arrow">→</span></div><div class="flow-row"><span class="no">4</span><span>产出 <span class="o">signed.ipa</span> 供下载安装</span><span class="arrow">→</span></div><div class="flow-row"><span class="no">5</span><span>iPhone Safari 打开安装链接 <span class="o">完成</span></span></div></div>
+</div></section>
+<section id="download"><div class="download"><h2>准备好签名你的第一个应用了吗？</h2><p>iSign 云签的源码完全开源托管在 GitHub，你可以直接部署到自己账户，使用自己的证书，数据完全自主可控。</p>
+<div class="dl-cta"><a class="dl-card" href="https://github.com/hjm98-rgb/isign" target="_blank" rel="noopener"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></span><span><b>GitHub 源码</b><span>查看仓库与部署</span></span></a>
+<a class="dl-card" href="#how"><span class="a"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></span><span><b>使用教程</b><span>查看使用流程</span></span></a></div>
+<div class="dl-note">需要你自己的 Apple 开发者证书或描述文件；请遵守 Apple 相关条款与你所在地区的法律法规。</div></div></section>
+<section id="faq" style="padding-top:0"><div class="sec-head"><div class="kicker">FAQ</div><h2>常见问题</h2></div>
+<div class="faq">
+<div class="faq-item"><button class="faq-q">iSign 云签需要越狱吗？<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-a"><div class="faq-a-in">不需要。iSign 面向的是通过开发者证书 + OTA 方式给自有设备安装应用的场景，无需越狱设备。</div></div></div>
+<div class="faq-item"><button class="faq-q">我可以用免费 Apple ID 签名吗？<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-a"><div class="faq-a-in">个人免费 Apple ID 的签名有设备数与有效期限制（通常 7 天/10 台设备）。付费开发者账号（99 美元/年）没有此限制。iSign 只是工具，签名主体与权限取决于你的 Apple 账号。</div></div></div>
+<div class="faq-item"><button class="faq-q">云打包安全吗？我的证书会泄露吗？<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-a"><div class="faq-a-in">iSign 完全开源，可部署在你自己的 GitHub 仓库中。证书建议通过 GitHub Secrets 存储，不要直接提交到仓库。请务必保管好你的 .p12 私钥，任何拿到私钥的人都能以你的身份签名。</div></div></div>
+<div class="faq-item"><button class="faq-q">安装提示「无法验证 App」怎么办？<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-a"><div class="faq-a-in">这是 iOS 对非 App Store 来源 App 的正常提示。请到「设置 → 通用 → VPN 与设备管理」中信任对应开发者证书，即可正常打开。</div></div></div>
+<div class="faq-item"><button class="faq-q">签名后的应用能否上架 App Store？<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="faq-a"><div class="faq-a-in">不能。iSign 仅用于个人/企业内部分发，不经过 App Store 审核流程，无法上架。</div></div></div>
+</div></section>
+<footer><div class="foot-in">
+<div class="foot-brand"><a class="logo" href="#top"><span class="logo-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#04101F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg></span>iSign<small>云签</small></a><p>面向个人开发者的 iOS 应用签名与分发工具。开源、自主可控、免 Mac 环境。</p></div>
+<div class="foot-col"><b>产品</b><a href="#features">功能</a><a href="#how">使用流程</a><a href="#cloud">云打包</a><a href="#download">下载</a></div>
+<div class="foot-col"><b>资源</b><a href="https://github.com/hjm98-rgb/isign" target="_blank" rel="noopener">GitHub 仓库</a><a href="#faq">常见问题</a><a href="#top">关于 iSign</a></div>
+<div class="foot-col"><b>合规声明</b><a href="#faq">证书与安全</a><a href="#faq">使用条款</a></div>
+</div><div class="foot-bottom">© 2026 iSign 云签 · 请仅使用你拥有授权的证书与应用 · 遵守所在地区法律法规</div></footer>
+<script>
+const burger=document.querySelector('.burger');
+const menu=document.getElementById('mobileMenu');
+burger.addEventListener('click',()=>menu.classList.toggle('open'));
+document.querySelectorAll('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('open')));
+document.querySelectorAll('.faq-q').forEach(q=>{q.addEventListener('click',()=>{const item=q.parentElement;const answer=item.querySelector('.faq-a');const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>{i.classList.remove('open');i.querySelector('.faq-a').style.maxHeight=null;});if(!isOpen){item.classList.add('open');answer.style.maxHeight=answer.scrollHeight+'px';}});});
+</script>
+</body>
+</html>
